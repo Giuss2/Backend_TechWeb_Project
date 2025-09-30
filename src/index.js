@@ -1,8 +1,13 @@
 import express from "express"
+import authRouter from './routes/authRouter';
 
 const app= express();
 const PORT= 3000;
 
+
+app.use(express.json());
+const router = express.Router();
+app.use('/auth', authRouter);
 
 //middleware for login
 

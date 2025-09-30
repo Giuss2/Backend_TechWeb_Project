@@ -1,4 +1,11 @@
-import express from "express";
+import express from 'express';
 import { AuthController } from "../controllers/authController.js";
 
-export const authenticationRouter = express.Router();
+const authRouter = express.Router();
+
+authRouter.post('/login', (req, res) => {
+  // logica login
+  res.send('Login effettuato');
+});
+
+export default authRouter;
