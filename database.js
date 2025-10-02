@@ -1,4 +1,11 @@
-const sqlite3 = require('sqlite3').verbose();
+import { Sequelize } from 'sequelize';
+import 'dotenv/config.js';
+
+
+export const database = new Sequelize(process.env.DB_CONNECTION_URI, {
+  dialect: process.env.DIALECT
+});
+//const sqlite3 = require('sqlite3').verbose();
 
 const db = new sqlite3.Database('./mydb.sqlite', (err) => {
   if (err) {

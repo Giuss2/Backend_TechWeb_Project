@@ -5,6 +5,11 @@ const app= express();
 const PORT= 3000;
 
 
+app.get('/', (req, res)=>{
+  res.send('Hello World!')
+});
+
+
 app.use(express.json());
 const router = express.Router();
 app.use('/auth', authRouter);
