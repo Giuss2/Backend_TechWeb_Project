@@ -1,12 +1,14 @@
 import {User} from "../models/database.js";
 import Jwt from "jsonwebtoken";
+import type { Request, Response } from "express";
+import type { JwtPayload, VerifyCallback } from "jsonwebtoken";
 
 export class AuthController{
     /**
    * @param {http.IncomingMessage} request 
    * @param {http.ServerResponse} response 
    */
-  static async checkCredentials(req, res){
+  static async checkCredentials(req: Request, res: Response): Promise<boolean>{
     let user = new User({
       userName: req.body.usr, 
       password: req.body.pwd
@@ -23,12 +25,12 @@ export class AuthController{
   }
 
 
-    static issueToken(username){
-        return Jwt.sign({user:username}, process.env.TOKEN_SECRET, {expiresIn: `${24*60*60}s`});
+    static issueToken(username: string): string{
+        return Jwt.sign({user:username}, process.env.TOKEN_SECRET!, {expiresIn: `${24*60*60}s`});
     }
 
-    static isTokenValid(token, callback){
-        Jwt.verify(token, process.env.TOKEN_SECRET, callback);
+    static isTokenValid(token: string, callback: VerifyCallback){
+        Jwt.verify(token, process.env.TOKEN_SECRET!, callback);
     }
 
 }
