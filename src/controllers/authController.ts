@@ -1,7 +1,8 @@
 import Jwt from "jsonwebtoken";
 import type { Request, Response } from "express";
 import type { JwtPayload, VerifyCallback } from "jsonwebtoken";
-import {User} from '../../index.js';
+import {User} from '../models/User.js';
+import {Cat} from "../models/Cat.js";
 
 export class AuthController{
     /**
@@ -33,4 +34,8 @@ export class AuthController{
         Jwt.verify(token, process.env.TOKEN_SECRET!, callback);
     }
 
+    static async canUserModifyCat(user, catId){
+      const cat = await Cat.findByPk(catId);
+      return cat && cat.UserUserName === user; //must exist and be associater with user
+    }
 }

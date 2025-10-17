@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import express from "express"
 import authRouter from './src/routes/authRouter';
-import {defineUserModel, User} from './src/models/User'
+import {defineUserModel, User} from './src/models/User';
 
 const app= express();
 const PORT= 3000;
@@ -52,4 +52,4 @@ app.use( (err, req, res, next) => {
 app.listen(PORT);
 
 
-export {User, sequilize};
+export {user, sequilize};

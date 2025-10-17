@@ -9,7 +9,7 @@ export interface UserAttributes {
 }
 
 export function createModel(sequelize: Sequelize) {
-  sequelize.define<Model<UserAttributes>>('User', {
+  const User= sequelize.define<Model<UserAttributes>>('User', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -29,5 +29,9 @@ export function createModel(sequelize: Sequelize) {
     }
   }, {
   });
+
+  return User;
 }
+
+
 
