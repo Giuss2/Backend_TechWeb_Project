@@ -1,6 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
 import authRouter from './src/routes/authRouter';
-import {sequelize} from "./src/models/indexModels";
 
 const app= express();
 const PORT= 3000;
@@ -26,13 +25,6 @@ app.use( (err: any, req: Request, res: Response, next: NextFunction) => {
 });
 
 
-app.listen(PORT, async () => {
-  try {
-    await sequelize.sync({ alter: true });
-    console.log(`Server running on http://localhost:${PORT}`);
-  } catch (err) {
-    console.error("Error sync:", err);
-  }
-});
+app.listen(PORT);
 
 
