@@ -25,6 +25,14 @@ export class AuthController{
     return found!==null;
   }
 
+  static async saveUser(req: Request, res: Response): Promise<boolean>{
+    let user = new User({
+      userName: req.body.usr, 
+      password: req.body.pwd
+    });
+    return user.save();
+  }
+
 
     static issueToken(username: string): string{
         return Jwt.sign({user:username}, process.env.TOKEN_SECRET!, {expiresIn: `${24*60*60}s`});

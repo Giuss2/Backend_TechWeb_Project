@@ -12,11 +12,11 @@ authRouter.post('/login', async (req, res) => {
     res.json( {error: "Invalid credentials. Try again."});
   }
 });
-/*
+
 authRouter.post("/signup", (req, res, next) => {
   AuthController.saveUser(req, res).then((user) => {
     res.json(user);
   }).catch((err) => {
     next({status: 500, message: "Could not save user"});
   })
-});*/
+});
