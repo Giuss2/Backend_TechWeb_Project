@@ -44,5 +44,5 @@
     "skipLibCheck": true,
   },
   
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "index.js"]
 }

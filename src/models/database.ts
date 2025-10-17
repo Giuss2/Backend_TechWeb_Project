@@ -1,11 +1,10 @@
-import { Sequelize } from 'sequelize';
+import { Sequelize, type Dialect } from 'sequelize';
 import {createModel as createUserModel} from "./User.js"
 import 'dotenv/config.js';
-import type { sqlite3 } from 'sqlite3';
 
 
 export const database = new Sequelize(process.env.DB_CONNECTION_URI!, {
-  dialect: process.env.DIALECT as any
+  dialect: process.env.DIALECT! as Dialect
 });
 //const sqlite3 = require('sqlite3').verbose();
 

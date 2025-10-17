@@ -1,18 +1,23 @@
-import { Sequelize, DataTypes, Model, type ModelDefined } from "sequelize";
+import { Sequelize, DataTypes, Model } from "sequelize";
 import { createHash } from "crypto";
 
 
 export interface UserAttributes {
   userName: string;
   password: string;
+  id: number;
 }
 
 export function createModel(sequelize: Sequelize) {
   sequelize.define<Model<UserAttributes>>('User', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
     userName: {
       type: DataTypes.STRING,
-      allowNull: false,
-      primaryKey: true
+      allowNull: false
     },
     password: {
       type: DataTypes.STRING,

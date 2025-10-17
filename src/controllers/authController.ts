@@ -1,7 +1,7 @@
-import {User} from "../models/database.js";
 import Jwt from "jsonwebtoken";
 import type { Request, Response } from "express";
 import type { JwtPayload, VerifyCallback } from "jsonwebtoken";
+import {User} from '../../index.js';
 
 export class AuthController{
     /**
