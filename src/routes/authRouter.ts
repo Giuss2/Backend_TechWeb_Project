@@ -20,3 +20,5 @@ authRouter.post("/signup", (req, res, next) => {
     next({status: 500, message: "Could not save user"});
   })
 });
+
+export default authRouter;  //uso default perché è l'unica cosa che voglio esportare

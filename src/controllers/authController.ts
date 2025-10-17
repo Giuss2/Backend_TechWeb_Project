@@ -1,8 +1,7 @@
 import Jwt from "jsonwebtoken";
 import type { Request, Response } from "express";
 import type { JwtPayload, VerifyCallback } from "jsonwebtoken";
-import {User} from '../models/User.js';
-import {Cat} from "../models/Cat.js";
+import {User, Cat} from '../models/indexModels.js';
 
 export class AuthController{
     /**
@@ -10,26 +9,27 @@ export class AuthController{
    * @param {http.ServerResponse} response 
    */
   static async checkCredentials(req: Request, res: Response): Promise<boolean>{
-    let user = new User({
+    let user= User.build({
       userName: req.body.usr, 
       password: req.body.pwd
     });
 
     let found = await User.findOne({
       where: {
-        userName: user.userName,
-        password: user.password 
+        userName: user?.get('userName') as string,
+        password: user?.get('password') as string
       }
     });
 
     return found!==null;
   }
 
-  static async saveUser(req: Request, res: Response): Promise<boolean>{
-    let user = new User({
+  static async saveUser(req: Request, res: Response): Promise<InstanceType<typeof User>>{
+    let user= User.build({
       userName: req.body.usr, 
       password: req.body.pwd
     });
+
     return user.save();
   }
 
@@ -42,7 +42,7 @@ export class AuthController{
         Jwt.verify(token, process.env.TOKEN_SECRET!, callback);
     }
 
-    static async canUserModifyCat(user, catId){
+    static async canUserModifyCat(user: string, catId: number){
       const cat = await Cat.findByPk(catId);
       return cat && cat.UserUserName === user; //must exist and be associater with user
     }

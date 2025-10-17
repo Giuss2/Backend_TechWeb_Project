@@ -1,14 +1,15 @@
-import { Sequelize, DataTypes, Model } from "sequelize";
+import { Sequelize, DataTypes, Model, type Optional } from "sequelize";
 import { createHash } from "crypto";
 
-export interface UserAttributes {
+export interface UserAttributes {  //controlla che non l'hai usata in altri file (ho eliminato export)
   userName: string;
   password: string;
   id: number;
 }
+interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
 
 export function createUserModel(database: Sequelize) {
-  const User= database.define<Model<UserAttributes>>('User', {
+  const User= database.define<Model<UserCreationAttributes>>('User', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -26,9 +27,7 @@ export function createUserModel(database: Sequelize) {
         (this as unknown as Model).setDataValue('password', hash.update(value).digest("hex"));
       }
     }
-  }, {
-  });
-
+  })
   return User;
 }
 
