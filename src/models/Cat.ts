@@ -1,7 +1,7 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Sequelize } from "sequelize";
 
-export function createModel(database){
-    database.define('Cat', {
+export function createCatModel(database: Sequelize){
+    const Cat= database.define('Cat', {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
@@ -30,4 +30,5 @@ export function createModel(database){
         }
         
     })
+    return Cat;
 }

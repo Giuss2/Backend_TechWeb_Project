@@ -1,15 +1,14 @@
 import { Sequelize, DataTypes, Model } from "sequelize";
 import { createHash } from "crypto";
 
-
 export interface UserAttributes {
   userName: string;
   password: string;
   id: number;
 }
 
-export function createModel(sequelize: Sequelize) {
-  const User= sequelize.define<Model<UserAttributes>>('User', {
+export function createUserModel(database: Sequelize) {
+  const User= database.define<Model<UserAttributes>>('User', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -32,6 +31,4 @@ export function createModel(sequelize: Sequelize) {
 
   return User;
 }
-
-
 

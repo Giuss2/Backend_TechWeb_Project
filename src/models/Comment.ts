@@ -1,8 +1,7 @@
 import { Sequelize, DataTypes } from "sequelize";
-import { database } from "./database.js";
 
-export function createModel(database){
-    database.define('Comment', {
+export function createCommentModel(database: Sequelize){
+    const Comment= database.define('Comment', {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
@@ -18,4 +17,5 @@ export function createModel(database){
             defaultValue: DataTypes.NOW
         }
     })
+    return Comment;
 }

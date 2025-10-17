@@ -1,32 +1,8 @@
-import { Sequelize } from "sequelize";
 import express from "express"
 import authRouter from './src/routes/authRouter';
-import {defineUserModel, User} from './src/models/User';
 
 const app= express();
 const PORT= 3000;
-
-const sequilize = new Sequelize();
-
-defineUserModel(sequilize);
-
-//associations
-User.hasMany(database.models.Comment, {
-  foreignKey: 'userId',
-  onDelete: 'CASCADE'
-});
-database.models.Comment.belongsTo(User, {
-  foreignKey: 'userId'
-});
-
-
-database.models.Cat.hasMany(database.models.Comment, {
-  foreignKey: 'catId',
-  onDelete: 'CASCADE'
-});
-database.models.Comment.belongsTo(database.models.Cat, {
-  foreignKey: 'catId'
-});
 
 
 app.use(express.json());
@@ -49,7 +25,13 @@ app.use( (err, req, res, next) => {
 });
 
 
-app.listen(PORT);
+app.listen(PORT, async () => {
+  try {
+    await sequelize.sync({ alter: true });
+    console.log(`Server running on http://localhost:${PORT}`);
+  } catch (err) {
+    console.error("Error sync:", err);
+  }
+});
 
 
-export {user, sequilize};
