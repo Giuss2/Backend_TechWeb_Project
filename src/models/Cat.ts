@@ -27,7 +27,16 @@ export function createCatModel(database: Sequelize){
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: DataTypes.NOW
+        },
+        userID: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            references: {
+                model: 'Users',
+                key: 'userName'
+            }
         }
+
         
     })
     return Cat;

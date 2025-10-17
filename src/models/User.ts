@@ -6,7 +6,7 @@ export interface UserAttributes {  //controlla che non l'hai usata in altri file
   password: string;
   id: number;
 }
-interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
+export interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
 
 export function createUserModel(database: Sequelize) {
   const User= database.define<Model<UserCreationAttributes>>('User', {

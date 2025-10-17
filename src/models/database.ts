@@ -1,5 +1,5 @@
 import { Sequelize, type Dialect } from 'sequelize';
-import {createModel as createUserModel} from "./User.js"
+import {createUserModel} from "./User.js"
 import 'dotenv/config.js';
 
 

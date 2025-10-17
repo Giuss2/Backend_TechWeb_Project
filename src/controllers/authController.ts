@@ -42,8 +42,8 @@ export class AuthController{
         Jwt.verify(token, process.env.TOKEN_SECRET!, callback);
     }
 
-    static async canUserModifyCat(user: string, catId: number){
+    static async canUserModifyCat(userName: string, catId: number){
       const cat = await Cat.findByPk(catId);
-      return cat && cat.UserUserName === user; //must exist and be associater with user
+      return cat && cat.get('userName') === userName; //must exist and be associater with user
     }
 }

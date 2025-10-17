@@ -31,5 +31,14 @@ Comment.belongsTo(Cat, {
   foreignKey: 'catId'
 });
 
+User.hasMany(Cat, {
+  foreignKey: 'userName'
+});
+
+Cat.belongsTo(User, {
+  foreignKey: 'userName'
+});
+
+
 
 export { sequelize, User, Cat, Comment };
