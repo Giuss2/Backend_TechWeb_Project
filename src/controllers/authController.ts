@@ -1,6 +1,6 @@
 import Jwt from "jsonwebtoken";
 import type { Request, Response } from "express";
-import type { JwtPayload, VerifyCallback } from "jsonwebtoken";
+import type { VerifyCallback } from "jsonwebtoken";
 import {User, Cat} from '../models/indexModels.js';
 
 export class AuthController{
