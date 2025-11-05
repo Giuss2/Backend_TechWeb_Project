@@ -15,6 +15,14 @@ export function createCommentModel(database: Sequelize){
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: DataTypes.NOW
+        },
+        CatPageID: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            references: {
+                model: 'Cat',
+                key: 'CatID'
+            }
         }
     })
     return Comment;

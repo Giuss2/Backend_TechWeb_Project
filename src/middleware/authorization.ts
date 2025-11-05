@@ -36,7 +36,7 @@ export async function ensureUsersModifyOwnCats(req: Request, res: Response, next
   }
 
   const catId = Number(catIdParam);
-  if(isNaN(catId)){
+  if(Number.isNaN(catId)){
     next({ status: 400, message: "Invalid cat id" });
     return;
   }

@@ -25,8 +25,20 @@ catRouter.get("/cats/:id", ensureUsersModifyOwnCats, (req: Request, res: Respons
     if(item)
       res.json(item);
     else 
-      next({status: 404, message: "cat not found"});
+      next({status: 404, message: "Cat not found"});
   }).catch( err => {
     next(err);
   })
+});
+
+catRouter.put("/cats/:id", ensureUsersModifyOwnCats, (req, res, next) => {
+  CatController.updateCat(req)
+    .then(cat => cat ? res.json(cat) : next({status: 404, message: "Cat not found"}))
+    .catch(next);
+});
+
+catRouter.delete("/cats/:id", ensureUsersModifyOwnCats, (req, res, next) => {
+  CatController.deleteCat(req)
+    .then(cat => cat ? res.json({ message: "Cat deleted" }) : next({status: 404, message: "Cat not found"}))
+    .catch(next);
 });
