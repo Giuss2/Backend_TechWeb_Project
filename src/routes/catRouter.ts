@@ -1,8 +1,8 @@
 import express, { type NextFunction, type Request, type Response } from "express";
 import { CatController } from "../controllers/CatController.js";
-import {ensureUsersModifyOnlyOwnCats} from "../middleware/authorization.js";
+import {ensureUsersModifyOwnCats} from "../middleware/authorization.js";
 
-export const catRouter = new express.Router();
+export const catRouter= express.Router();
 
 catRouter.get("/cats", (req: Request, res: Response, next: NextFunction) => {
   CatController.getCatsForCurrentUser(req).then(catItems => {
@@ -20,7 +20,7 @@ catRouter.post("/cats", (req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-catRouter.get("/cats/:id", ensureUsersModifyOnlyOwnCats, (req: Request, res: Response, next: NextFunction) => {
+catRouter.get("/cats/:id", ensureUsersModifyOwnCats, (req: Request, res: Response, next: NextFunction) => {
   CatController.findById(req).then( (item) => {
     if(item)
       res.json(item);

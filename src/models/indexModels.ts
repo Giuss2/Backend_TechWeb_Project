@@ -9,6 +9,11 @@ const sequelize = new Sequelize({
   storage: "database.sqlite" 
 });
 
+declare module "express-serve-static-core" {
+  interface Request {
+    username?: string;
+  }
+}
 
 const User = createUserModel(sequelize);
 const Cat = createCatModel(sequelize);
