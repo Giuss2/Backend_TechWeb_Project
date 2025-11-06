@@ -1,5 +1,5 @@
 import { type Request, type Response } from "express";
-import { User, Cat } from "../models/indexModels.js";
+import { User, Cat, Comment } from "../models/indexModels.js";
 
 export class UserController{
     // mostra il profilo utente 
@@ -21,10 +21,34 @@ export class UserController{
         }
     }
 
+    // tutti i commenti pubblicati da un utente
+    static async getUserComments(req: Request, res: Response) {
+        try {
+            const {id} = req.params;
+
+            const user = await User.findByPk(id);
+            if (!user) {
+                res.status(404);
+                return res.json({ error: "Utente non trovato" });
+            }
+
+            const comments = await Comment.findAll({
+                where: { userId: id },
+                attributes: ["id", "text", "catId", "createdAt"],
+                order: [["createdAt", "DESC"]],
+            });
+
+            res.json(comments);
+        } catch (error) {
+            console.error("Errore nel recupero dei commenti utente:", error);
+            res.status(500).json({ error: "Errore interno del server" });
+        }
+    }
+
     // mostra tutti i gatti inseriti da un utente
     static async getUserCats(req: Request, res: Response) {
         try {
-            const { id } = req.params;
+            const {id} = req.params;
 
             // verifica che l'utente esista
             const user = await User.findByPk(id);
