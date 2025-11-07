@@ -13,7 +13,6 @@ app.get('/', (req: Request, res: Response)=>{
   res.send('Hello World!')
 });
 
-//middleware for login
 
 //error handler
 app.use( (err: any, req: Request, res: Response, next: NextFunction) => {
