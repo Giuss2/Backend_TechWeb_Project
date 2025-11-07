@@ -2,7 +2,7 @@ import { type Request, type Response } from "express";
 import { User, Cat, Comment } from "../models/indexModels.js";
 
 export class UserController{
-    // mostra il profilo utente 
+     
     static async getUserProfile(req: Request, res: Response) {
         try {
             const { id } = req.params;
@@ -21,7 +21,7 @@ export class UserController{
         }
     }
 
-    // tutti i commenti pubblicati da un utente
+    // all user's comments
     static async getUserComments(req: Request, res: Response) {
         try {
             const {id} = req.params;
@@ -45,12 +45,12 @@ export class UserController{
         }
     }
 
-    // mostra tutti i gatti inseriti da un utente
+    // show cat pages of an user
     static async getUserCats(req: Request, res: Response) {
         try {
             const {id} = req.params;
 
-            // verifica che l'utente esista
+            // check the existence of an user
             const user = await User.findByPk(id);
             if (!user)
                 return res.status(404).json({ message: "Utente non trovato" });

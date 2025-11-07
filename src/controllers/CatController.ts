@@ -33,7 +33,7 @@ export class CatController{
     static async deleteCat(req: Request) {
         const cat = await Cat.findByPk(req.params.id);
         if (!cat) return null;
-        await cat.destroy(); //elimina il record
+        await cat.destroy(); //delete record
         return cat;
     }
 

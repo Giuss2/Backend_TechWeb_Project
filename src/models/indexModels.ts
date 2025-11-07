@@ -21,27 +21,28 @@ const Comment = createCommentModel(sequelize);
 
 //Associations
 User.hasMany(Comment, {
-  foreignKey: 'userId',
+  foreignKey: 'userID',
   onDelete: 'CASCADE'
 });
 Comment.belongsTo(User, {
-  foreignKey: 'userId'
+  foreignKey: 'userID'
 });
 
 Cat.hasMany(Comment, {
-  foreignKey: 'catId',
+  foreignKey: 'catID',
   onDelete: 'CASCADE'
 });
 Comment.belongsTo(Cat, {
-  foreignKey: 'catId'
+  foreignKey: 'catID'
 });
 
 User.hasMany(Cat, {
-  foreignKey: 'userName'
+  foreignKey: 'userID',
+  onDelete: 'CASCADE'
 });
 
 Cat.belongsTo(User, {
-  foreignKey: 'userName'
+  foreignKey: 'userID'
 });
 
 

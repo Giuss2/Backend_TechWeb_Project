@@ -16,12 +16,20 @@ export function createCommentModel(database: Sequelize){
             allowNull: false,
             defaultValue: DataTypes.NOW
         },
-        CatPageID: {
+        catID: {
             type: DataTypes.STRING,
             allowNull: false,
             references: {
                 model: 'Cat',
-                key: 'CatID'
+                key: 'catID'
+            }
+        },
+        userID: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            references: {
+                model: 'Users',
+                key: 'userName'
             }
         }
     })

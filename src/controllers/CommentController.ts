@@ -2,32 +2,30 @@ import type { Request } from "express";
 import {Comment} from "../models/indexModels.js";
 
 export class CommentController{
-    // GET /cats/:catId/comments -> tutti i commenti di un gatto
+    // all cat page's comments
   static async getCommentsForCat(req: Request) {
     const catId = Number(req.params.catId);
     if (isNaN(catId)) return [];
 
     return Comment.findAll({
-      where: { CatId: catId }, // assume che tu abbia la foreign key CatId
+      where: { CatId: catId }, 
       order: [['createdAt', 'ASC']]
     });
   }
-
-  // POST /cats/:catId/comments -> aggiungi un commento
+  
   static async addComment(req: Request) {
     const catId = Number(req.params.catId);
     if (isNaN(catId)) return null;
 
     const comment = Comment.build({
       CatId: catId,
-      UserUserName: req.username, // assegna automaticamente l'autore
+      UserUserName: req.username, // set the author
       content: req.body.content
     });
 
     return comment.save();
   }
 
-  // DELETE /comments/:id
   static async deleteComment(req: Request) {
     const commentId = Number(req.params.id);
     if (isNaN(commentId)) return null;

@@ -27,21 +27,25 @@ export function enforceAuthentication(req: Request, res: Response, next: NextFun
 }
 
 export async function ensureUsersModifyOwnCats(req: Request, res: Response, next: NextFunction){
-  const user = req.username;
-  const catIdParam = req.params.id;
+  
+  //only authenticated user can own cat's pages
+  await new Promise<void>((resolve, reject) => {
+    enforceAuthentication(req, res, (err?: any) => {
+      if (err) reject(err);
+      else resolve();
+    });
+  }).catch(err => {
+    return next(err);
+  });
 
-  if(!user){
-    next({status: 401, message: "Unauthorized"});
-    return;
-  }
-
-  const catId = Number(catIdParam);
+  const catId = Number(req.params.id);
   if(Number.isNaN(catId)){
     next({ status: 400, message: "Invalid cat id" });
     return;
   }
 
-  const userHasPermission = await AuthController.canUserModifyCat(user, catId);
+  const userHasPermission = await AuthController.canUserModifyCat(req.username!, catId);  //username exists
+  //must be the author
   if(userHasPermission){
     next();
   } else {
@@ -50,6 +54,4 @@ export async function ensureUsersModifyOwnCats(req: Request, res: Response, next
       message: "Forbidden! You do not have permissions to view or modify this resource"
     });
   }
-
-  
 }

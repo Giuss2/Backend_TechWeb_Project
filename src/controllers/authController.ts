@@ -14,6 +14,7 @@ export class AuthController{
       password: req.body.pwd
     });
 
+    //check if a user exists already
     let found = await User.findOne({
       where: {
         userName: user?.get('userName') as string,
@@ -34,16 +35,17 @@ export class AuthController{
   }
 
 
-    static issueToken(username: string): string{
-        return Jwt.sign({user:username}, process.env.TOKEN_SECRET!, {expiresIn: `${24*60*60}s`});
-    }
+  static issueToken(username: string): string{
+    return Jwt.sign({user:username}, process.env.TOKEN_SECRET!, {expiresIn: `${24*60*60}s`});
+  }
 
-    static isTokenValid(token: string, callback: VerifyCallback){
-        Jwt.verify(token, process.env.TOKEN_SECRET!, callback);
-    }
+  static isTokenValid(token: string, callback: VerifyCallback){
+    Jwt.verify(token, process.env.TOKEN_SECRET!, callback);
+  }
 
-    static async canUserModifyCat(userName: string, catId: number){
-      const cat = await Cat.findByPk(catId);
-      return cat && cat.get('userName') === userName; //must exist and be associater with user
-    }
+  //an user can modify a cat page ONLY if he is the author
+  static async canUserModifyCat(userName: string, catId: number){
+    const cat = await Cat.findByPk(catId);
+    return cat && cat.get('userName') === userName; //must exist and be associater with user
+  }
 }
