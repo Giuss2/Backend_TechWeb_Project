@@ -4,7 +4,7 @@ import {enforceAuthentication, ensureUsersModifyOwnCats} from "../middleware/aut
 
 export const catRouter= express.Router();
 
-//retrive all cat's pages of an author
+//retrive all cat pages of an author
 catRouter.get("/cats", (req: Request, res: Response, next: NextFunction) => {
   CatController.getCatsForCurrentUser(req).then(catItems => {
     res.json(catItems)
@@ -13,7 +13,7 @@ catRouter.get("/cats", (req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-//retrive a single cat's page
+//retrive a single cat page
 catRouter.get("/cats/:id", (req: Request, res: Response, next: NextFunction) => {
   CatController.findById(req)
     .then(cat => {
@@ -31,14 +31,14 @@ catRouter.post("/cats", enforceAuthentication, (req: Request, res: Response, nex
     .catch(next);
 });
 
-//authors can modify only his own cat's pages
+//authors can modify only his own cat pages
 catRouter.put("/cats/:id", ensureUsersModifyOwnCats, (req, res, next) => {
   CatController.updateCat(req)
     .then(cat => cat ? res.json(cat) : next({status: 404, message: "Cat not found"}))
     .catch(next);
 });
 
-//authors can delete only his own cat's pages
+//authors can delete only his own cat pages
 catRouter.delete("/cats/:id", ensureUsersModifyOwnCats, (req, res, next) => {
   CatController.deleteCat(req)
     .then(cat => cat ? res.json({ message: "Cat deleted" }) : next({status: 404, message: "Cat not found"}))

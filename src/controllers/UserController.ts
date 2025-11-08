@@ -5,19 +5,19 @@ export class UserController{
      
     static async getUserProfile(req: Request, res: Response) {
         try {
-            const { id } = req.params;
+            const {id} = req.params;
 
             const user = await User.findByPk(id, {
-                attributes: ["id", "userName", "createdAt"], // non esponiamo password
+                attributes: ["id", "userName", "createdAt"], //don't expose password
             });
 
             if (!user)
-                return res.status(404).json({ message: "Utente non trovato" });
+                return res.status(404).json({ message: "User not found" });
 
             res.json(user);
         } catch (err) {
-            console.error("Errore nel recupero del profilo:", err);
-            res.status(500).json({ message: "Errore interno del server" });
+            console.error("Error retrieving user profile:", err);
+            res.status(500).json({ message: "Internal server error" });
         }
     }
 
@@ -29,19 +29,19 @@ export class UserController{
             const user = await User.findByPk(id);
             if (!user) {
                 res.status(404);
-                return res.json({ error: "Utente non trovato" });
+                return res.json({ error: "User not found" });
             }
 
             const comments = await Comment.findAll({
                 where: { userId: id },
                 attributes: ["id", "text", "catId", "createdAt"],
-                order: [["createdAt", "DESC"]],
+                order: [["createdAt", "DESC"]],     //show most recent comments first
             });
 
             res.json(comments);
         } catch (error) {
-            console.error("Errore nel recupero dei commenti utente:", error);
-            res.status(500).json({ error: "Errore interno del server" });
+            console.error("Error retrieving user comments:", error);
+            res.status(500).json({ error: "Internal server error" });
         }
     }
 
@@ -53,18 +53,18 @@ export class UserController{
             // check the existence of an user
             const user = await User.findByPk(id);
             if (!user)
-                return res.status(404).json({ message: "Utente non trovato" });
+                return res.status(404).json({ message: "User not found" });
 
             const cats = await Cat.findAll({
                 where: { userId: id },
                 attributes: ["id", "title", "photoUrl", "createdAt"],
-                order: [["createdAt", "DESC"]],
+                order: [["createdAt", "DESC"]],     //show most recent cat pages first
             });
 
             res.json(cats);
         } catch (err) {
-            console.error("Errore nel recupero dei gatti dell'utente:", err);
-            res.status(500).json({ message: "Errore interno del server" });
+            console.error("Error retrieving user's cats:", err);
+            res.status(500).json({ message: "Internal server error" });
         }
     }
 

@@ -5,17 +5,15 @@ export class CommentController{
     // all cat page's comments
   static async getCommentsForCat(req: Request) {
     const catId = Number(req.params.catId);
-    if (isNaN(catId)) return [];
 
     return Comment.findAll({
       where: { CatId: catId }, 
-      order: [['createdAt', 'ASC']]
+      order: [['createdAt', 'DESC']]  //show most recent comments first
     });
   }
   
   static async addComment(req: Request) {
     const catId = Number(req.params.catId);
-    if (isNaN(catId)) return null;
 
     const comment = Comment.build({
       CatId: catId,
@@ -28,12 +26,11 @@ export class CommentController{
 
   static async deleteComment(req: Request) {
     const commentId = Number(req.params.id);
-    if (isNaN(commentId)) return null;
 
     const comment = await Comment.findByPk(commentId);
     if (!comment) return null;
 
-    // solo autore (potrei pure fare che l'autore del sito ha determinati 'privilegi') può cancellare
+    // Only the author (potrei pure fare che l'autore del sito ha determinati 'privilegi') can delete
     if (comment.get('UserUserName') !== req.username) {
       return "FORBIDDEN";
     }
