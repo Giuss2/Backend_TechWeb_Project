@@ -1,0 +1,1 @@
+{"version":3,"file":"CatController.d.ts","sourceRoot":"","sources":["../../../src/controllers/CatController.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,OAAO,EAAE,MAAM,SAAS,CAAC;AAGvC,qBAAa,aAAa;WAET,qBAAqB,CAAC,GAAG,EAAE,OAAO;WAQlC,OAAO,CAAC,GAAG,EAAE,OAAO;WAQpB,QAAQ,CAAC,GAAG,EAAE,OAAO;WAIrB,SAAS,CAAC,GAAG,EAAE,OAAO;WAOtB,SAAS,CAAC,GAAG,EAAE,OAAO;CAOtC"}

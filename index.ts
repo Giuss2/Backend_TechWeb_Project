@@ -1,5 +1,5 @@
-import express, { Request, Response, NextFunction } from "express";
-import authRouter from './src/routes/authRouter';
+import express, { type Request, type Response, type NextFunction } from "express";
+import authRouter from './src/routes/authRouter.js';
 
 const app= express();
 const PORT= 3000;
