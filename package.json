@@ -2,7 +2,7 @@
   "name": "backend_techweb_prog",
   "version": "0.0.1",
   "description": "API REST for techweb's project",
-  "main": "index.ts",
+  "main": "index.js",
   "type": "module",
   "license": "MIT",
   "private": false,
