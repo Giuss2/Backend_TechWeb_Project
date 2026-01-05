@@ -1,13 +1,17 @@
 import express, { type Request, type Response, type NextFunction } from "express";
-import authRouter from './src/routes/authRouter.js';
+import authRouter from './routes/authRouter.js';
+import { initializeDatabase } from "./models/database.js";
 
 const app= express();
 const PORT= 3000;
 
-
+//console.log("HELLO WORLD");
 app.use(express.json());
 //const router = express.Router();
-app.use(authRouter);
+//app.use(authRouter);
+app.use('/auth', authRouter);
+
+await initializeDatabase();
 
 app.get('/', (req: Request, res: Response)=>{
   res.send('Hello World!')

@@ -2,15 +2,19 @@ import { Sequelize, type Dialect } from 'sequelize';
 import {createUserModel} from "./User.js"
 import 'dotenv/config.js';
 
-
-export const database = new Sequelize(process.env.DB_CONNECTION_URI!, {
+export async function initializeDatabase() {
+  
+  console.log(process.env.DB_CONNECTION_URI);
+const database = new Sequelize(process.env.DB_CONNECTION_URI!, {
+  
   dialect: process.env.DIALECT! as Dialect
 });
 
 
+console.log("DATABASE");
 createUserModel(database);
 
-export const {User}= database.models;
+const {User}= database.models;
 
 try {
   await database.sync();
@@ -24,3 +28,5 @@ try {
 }
 
 
+
+}
