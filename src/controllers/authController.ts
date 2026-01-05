@@ -29,9 +29,9 @@ export class AuthController{
   }
 
 
-  static issueToken(username: string): string {
+  static issueToken(userId: number, username: string): string {
     return Jwt.sign(
-      { user: username },
+      { id: userId, userName: username },
       process.env.TOKEN_SECRET!,
       { expiresIn: `${24 * 60 * 60}s` } // 1 giorno
     );

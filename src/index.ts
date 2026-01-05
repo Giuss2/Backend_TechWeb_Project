@@ -1,14 +1,19 @@
 import express, { type Request, type Response, type NextFunction } from "express";
 import authRouter from './routes/authRouter.js';
 import { initializeDatabase } from "./models/database.js";
+import cors from "cors";
 
 const app= express();
 const PORT= 3000;
 
-//console.log("HELLO WORLD");
+app.use(cors({
+  origin: "http://localhost:4200",
+  credentials: true
+}));
+
+
 app.use(express.json());
-//const router = express.Router();
-//app.use(authRouter);
+
 app.use('/auth', authRouter);
 
 await initializeDatabase();

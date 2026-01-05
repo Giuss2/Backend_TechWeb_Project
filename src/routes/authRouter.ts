@@ -19,8 +19,9 @@ authRouter.post('/login', async (req, res, next) => {
     return res.status(401).json({ error: 'Invalid credentials. Try again.' });
   }
 
-
-  const token = AuthController.issueToken(user.getDataValue('userName'));
+const userId = user.getDataValue('id');
+const userName = user.getDataValue('userName');
+  const token = AuthController.issueToken(userId, userName);
   res.json({ token });
 
   } catch (err) {
