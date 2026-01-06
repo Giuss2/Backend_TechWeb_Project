@@ -1,4 +1,6 @@
 import { DataTypes, Sequelize } from "sequelize";
+console.log("Loading Cat model file...");
+
 
 export function createCatModel(database: Sequelize){
     const Cat= database.define('Cat', {
@@ -19,8 +21,12 @@ export function createCatModel(database: Sequelize){
             type: DataTypes.STRING, //da RIVEVERE
             allowNull: false
         },
-        posizioneGeografica: {
-            type: DataTypes.GEOGRAPHY('POINT', 4326), // Memo: Leaflet inverte le coordinate
+        lat: {
+            type: DataTypes.FLOAT,
+            allowNull: false
+        },
+        lng: {
+            type: DataTypes.FLOAT,
             allowNull: false
         },
         dataInserimento: {
@@ -28,16 +34,16 @@ export function createCatModel(database: Sequelize){
             allowNull: false,
             defaultValue: DataTypes.NOW
         },
-        userID: {
+        userId: {
             type: DataTypes.STRING,
             allowNull: false,
             references: {
                 model: 'Users',
-                key: 'userName'
+                key: 'id'
             }
         }
-
-        
+    }, {
+        tableName: 'Cats'
     })
     return Cat;
 }

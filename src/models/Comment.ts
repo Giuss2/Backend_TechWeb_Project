@@ -1,4 +1,5 @@
 import { Sequelize, DataTypes } from "sequelize";
+console.log("Loading Comment model file...");
 
 export function createCommentModel(database: Sequelize){
     const Comment= database.define('Comment', {
@@ -16,20 +17,20 @@ export function createCommentModel(database: Sequelize){
             allowNull: false,
             defaultValue: DataTypes.NOW
         },
-        catID: {
+        catId: {
             type: DataTypes.STRING,
             allowNull: false,
             references: {
-                model: 'Cat',
-                key: 'catID'
+                model: 'Cats',
+                key: 'id'
             }
         },
-        userID: {
+        userId: {
             type: DataTypes.STRING,
             allowNull: false,
             references: {
                 model: 'Users',
-                key: 'userName'
+                key: 'id'
             }
         }
     })

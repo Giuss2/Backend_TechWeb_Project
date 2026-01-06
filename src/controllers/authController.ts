@@ -9,16 +9,17 @@ import { createHash } from "crypto";
 export class AuthController{
   
   static async checkCredentials(email: string, password: string): Promise<Model<UserAttributes, UserCreationAttributes> | null> {
-   if (!password) throw new Error("Password is required");
+  if (!password) throw new Error("Password is required");
 
-    const hashedPassword = createHash("sha256").update(password).digest("hex");  
+  const user = await User.findOne({ where: { email } });
+  if (!user) return null;
 
-    const user = await User.findOne({
-      where: { email, password: hashedPassword }
-    });
+  const hashedPassword = createHash("sha256").update(password).digest("hex");
 
-    return user;
-  }
+  if (user.getDataValue('password') !== hashedPassword) return null;
+
+  return user;
+}
 
   static async saveUser(email: string, password: string){
     if (!password) throw new Error("Password is required");

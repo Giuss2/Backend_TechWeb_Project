@@ -1,5 +1,6 @@
 import { Sequelize, DataTypes, Model, type Optional } from "sequelize";
 import { createHash } from "crypto";
+console.log("Loading User model file...");
 
 export interface UserAttributes {  //controlla che non l'hai usata in altri file (ho eliminato export)
   userName: string;
@@ -30,7 +31,6 @@ export function createUserModel(database: Sequelize) {
       type: DataTypes.STRING,
       allowNull: false,
       set(value: string) { 
-        console.log(value);
         if (!value) throw new Error("Password is required");
         const hash = createHash("sha256"); 
         this.setDataValue('password', hash.update(value).digest("hex"));

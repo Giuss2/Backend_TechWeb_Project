@@ -5,12 +5,7 @@ export const userRouter = express.Router();
 
 // Public user's profile
 userRouter.get("/:id", async (req: Request, res: Response) => {
-  await UserController.getUserProfile(req, res);        //AWAIT ??SERVE? 
-});
-
-// all user's comments
-userRouter.get("/:id/comments", async (req: Request, res: Response) => {
-  await UserController.getUserComments(req, res);
+  await UserController.getUserProfile(req, res);        
 });
 
 

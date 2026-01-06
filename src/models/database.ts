@@ -1,32 +1,13 @@
-import { Sequelize, type Dialect } from 'sequelize';
-import {createUserModel} from "./User.js"
-import 'dotenv/config.js';
+import { sequelize } from './indexModels.js';
 
 export async function initializeDatabase() {
-  
-  console.log(process.env.DB_CONNECTION_URI);
-const database = new Sequelize(process.env.DB_CONNECTION_URI!, {
-  
-  dialect: process.env.DIALECT! as Dialect
-});
-
-
-console.log("DATABASE");
-createUserModel(database);
-
-const {User}= database.models;
-
-try {
-  await database.sync();
-  console.log("Database synced");
-} catch (err) {
-  if (err instanceof Error) {
-    console.error(err.message);
-  } else {
-    console.error(err); // generic fallback
+  try {
+    console.log("Before sync...");
+    console.log("Models available:", Object.keys(sequelize.models));
+    await sequelize.sync({ force: true });
+    console.log("Database synced successfully!");
+  } catch (err) {
+    console.error("Error syncing database:", err);
+    throw err; // rilancia l'errore per capire dove va
   }
-}
-
-
-
 }
