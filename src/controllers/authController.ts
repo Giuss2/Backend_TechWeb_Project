@@ -1,7 +1,7 @@
 import Jwt from "jsonwebtoken";
 import type { Request, Response } from "express";
 import type { VerifyCallback } from "jsonwebtoken";
-import {User, Cat} from '../models/indexModels.js';
+import {User, Cat} from '../models/database.js';
 import type { UserAttributes, UserCreationAttributes } from "../models/User.js";
 import type { Model } from "sequelize";
 import { createHash } from "crypto";

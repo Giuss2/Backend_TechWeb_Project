@@ -20,7 +20,7 @@ export function enforceAuthentication(req: Request, res: Response, next: NextFun
 
         const payload = decodedToken as JwtPayload & { user: string };
 
-        req.username = payload.user;
+        req.body.username = payload.user;
         next();
     }
   });
@@ -44,7 +44,7 @@ export async function ensureUsersModifyOwnCats(req: Request, res: Response, next
     return;
   }
 
-  const userHasPermission = await AuthController.canUserModifyCat(req.username!, catId);  //username exists
+  const userHasPermission = await AuthController.canUserModifyCat(req.body.username!, catId);  //username exists
   //must be the author
   if(userHasPermission){
     next();

@@ -1,12 +1,12 @@
 import type { Request } from "express";
-import {Cat} from "../models/indexModels.js"
+import {Cat} from "../models/database.js"
 
 export class CatController{
 
     static async getCatsForCurrentUser(req: Request){
         return Cat.findAll({
             where: {
-                UserUserName: req.username
+                UserUserName: req.body.username
             }
         })
     }
@@ -14,8 +14,8 @@ export class CatController{
     static async saveCat(req: Request){
         let cat= Cat.build(req.body);
         //let userName= cat.get('userName') 
-        //userName= req.username;
-        cat.set('UserUserName', req.username);
+        //userName= req.body.username;
+        cat.set('UserUserName', req.body.username);
         return cat.save();
     }
 

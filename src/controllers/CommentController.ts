@@ -1,5 +1,5 @@
 import type { Request } from "express";
-import {Comment} from "../models/indexModels.js";
+import {Comment} from "../models/database.js";
 
 export class CommentController{
     // all cat page's comments
@@ -17,7 +17,7 @@ export class CommentController{
 
     const comment = Comment.build({
       CatId: catId,
-      UserUserName: req.username, // set the author
+      UserUserName: req.body.username, // set the author
       content: req.body.content
     });
 
@@ -31,7 +31,7 @@ export class CommentController{
     if (!comment) return null;
 
     // Only the author (potrei pure fare che l'autore del sito ha determinati 'privilegi') can delete
-    if (comment.get('UserUserName') !== req.username) {
+    if (comment.get('UserUserName') !== req.body.username) {
       return "FORBIDDEN";
     }
 

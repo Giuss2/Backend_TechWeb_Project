@@ -1,13 +1,31 @@
-import { sequelize } from './indexModels.js';
+import { Sequelize } from "sequelize";
+import { createUserModel } from "./User.js";
+import { createCatModel } from "./Cat.js";
+import { createCommentModel } from "./Comment.js";
 
-export async function initializeDatabase() {
-  try {
-    console.log("Before sync...");
-    console.log("Models available:", Object.keys(sequelize.models));
-    await sequelize.sync({ force: true });
-    console.log("Database synced successfully!");
-  } catch (err) {
-    console.error("Error syncing database:", err);
-    throw err; // rilancia l'errore per capire dove va
-  }
-}
+const database = new Sequelize({
+  dialect: "sqlite",
+  storage: "database.sqlite",
+  logging: false
+});
+
+const User = createUserModel(database);
+const Cat = createCatModel(database);
+const Comment = createCommentModel(database);
+
+// associazioni
+User.hasMany(Cat, { foreignKey: 'userId', onDelete: 'CASCADE' });
+Cat.belongsTo(User, { foreignKey: 'userId' });
+
+User.hasMany(Comment, { foreignKey: 'userId', onDelete: 'CASCADE' });
+Comment.belongsTo(User, { foreignKey: 'userId' });
+
+Cat.hasMany(Comment, { foreignKey: 'catId', onDelete: 'CASCADE' });
+Comment.belongsTo(Cat, { foreignKey: 'catId' });
+
+// sync database
+database.sync({ force: false })
+  .then(() => console.log("Database synced"))
+  .catch(err => console.error("Error syncing database:", err.message));
+
+export { database, User, Cat, Comment };

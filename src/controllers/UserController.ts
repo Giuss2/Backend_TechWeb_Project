@@ -1,5 +1,5 @@
 import { type Request, type Response } from "express";
-import { User, Cat, Comment } from "../models/indexModels.js";
+import { User, Cat, Comment } from "../models/database.js";
 
 export class UserController{
      
