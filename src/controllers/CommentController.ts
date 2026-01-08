@@ -16,9 +16,9 @@ export class CommentController{
     const catId = Number(req.params.catId);
 
     const comment = Comment.build({
-      CatId: catId,
-      UserUserName: req.body.username, // set the author
-      content: req.body.content
+      catId: catId,
+      userId: req.body.userId, // set the author
+      testo: req.body.testo
     });
 
     return comment.save();

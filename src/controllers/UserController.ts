@@ -34,7 +34,7 @@ export class UserController{
 
             const cats = await Cat.findAll({
                 where: { userId: id },
-                attributes: ["id", "title", "photoUrl", "createdAt"],
+                attributes: ["id", "titolo", "foto", "createdAt"],
                 order: [["createdAt", "DESC"]],     //show most recent cat pages first
             });
 

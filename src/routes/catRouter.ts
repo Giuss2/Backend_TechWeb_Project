@@ -4,13 +4,11 @@ import {enforceAuthentication, ensureUsersModifyOwnCats} from "../middleware/aut
 
 export const catRouter= express.Router();
 
-//retrive all cat pages of an author
+//list all cat pages
 catRouter.get("/cats", (req: Request, res: Response, next: NextFunction) => {
-  CatController.getCatsForCurrentUser(req).then(catItems => {
-    res.json(catItems)
-  }).catch(err => {
-    next(err);
-  });
+  CatController.listAllCats(req)
+    .then(cats => res.json(cats))
+    .catch(next);
 });
 
 //retrive a single cat page

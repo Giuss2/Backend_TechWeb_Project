@@ -6,8 +6,6 @@ const authRouter = express.Router();
 authRouter.post('/login', async (req, res, next) => {
   try {
     const { email, password } = req.body;
-  
-  //  const user1 = await AuthController.saveUser(email, password); //DA TOGLIERE
 
     if (!email || !password) {
       return res.status(400).json({ error: 'Email e password richieste' });

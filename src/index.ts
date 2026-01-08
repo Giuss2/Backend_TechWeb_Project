@@ -4,9 +4,13 @@ import cors from "cors";
 import { userRouter } from "./routes/userRouter.js";
 import { catRouter } from "./routes/catRouter.js";
 import { commentRouter } from "./routes/commentRouter.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
   const app = express();
   const PORT = 3000;
+  console.log(process.env.TOKEN_SECRET);
 
   app.use(cors({
     origin: "http://localhost:4200",

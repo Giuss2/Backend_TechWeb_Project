@@ -3,19 +3,18 @@ import {Cat} from "../models/database.js"
 
 export class CatController{
 
-    static async getCatsForCurrentUser(req: Request){
-        return Cat.findAll({
-            where: {
-                UserUserName: req.body.username
-            }
-        })
-    }
 
+    static async listAllCats(req: Request){
+        return Cat.findAll({
+            order: [["createdAt", "DESC"]]  //show most recent cat pages first
+        });
+    }
+    
     static async saveCat(req: Request){
         let cat= Cat.build(req.body);
         //let userName= cat.get('userName') 
         //userName= req.body.username;
-        cat.set('UserUserName', req.body.username);
+        cat.set('userId', req.body.userId);
         return cat.save();
     }
 
