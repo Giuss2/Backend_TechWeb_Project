@@ -5,14 +5,14 @@ import { enforceAuthentication } from "../middleware/authorization.js";
 export const commentRouter= express.Router();
 
 //all cat page's comments
-commentRouter.get("/cats/:catId/comments", (req: Request, res: Response, next: NextFunction) => {
+commentRouter.get("/:catId/comments", (req: Request, res: Response, next: NextFunction) => {
   CommentController.getCommentsForCat(req)
     .then(comments => res.json(comments))
     .catch(next);
 });
 
 //only authenticated users can add a comment
-commentRouter.post("/cats/:catId/comments", enforceAuthentication, (req: Request, res: Response, next: NextFunction) => {
+commentRouter.post("/:catId/comments", enforceAuthentication, (req: Request, res: Response, next: NextFunction) => {
   CommentController.addComment(req)
     .then(comment => res.json(comment))
     .catch(next);
