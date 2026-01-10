@@ -23,7 +23,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "nodemon --watch src --ext ts --exec node --loader ts-node/esm src/index.ts",
-    "seed": "npx ts-node src/seed.ts",
+    "seed": " node --loader ts-node/esm src/seed.ts",
     "test": "npm run build & npm run dev"
   },
   "dependencies": {

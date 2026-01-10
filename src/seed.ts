@@ -2,6 +2,7 @@ import { database, User, Cat, Comment } from './models/database.js';
 
 async function seed() {
   try {
+    console.log('SEED AVVIATO');
     // Ricrea tutte le tabelle
     await database.sync({ force: true });
 
