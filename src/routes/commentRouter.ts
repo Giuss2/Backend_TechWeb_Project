@@ -12,11 +12,14 @@ commentRouter.get("/:catId/comments", (req: Request, res: Response, next: NextFu
 });
 
 //only authenticated users can add a comment
-commentRouter.post("/:catId/comments", enforceAuthentication, (req: Request, res: Response, next: NextFunction) => {
+commentRouter.post("/:catId/comments", (req, res, next) => {
+  next();
+}, enforceAuthentication, (req, res, next) => {
   CommentController.addComment(req)
     .then(comment => res.json(comment))
     .catch(next);
 });
+
 
 //only authenticated users can delete a comment
 commentRouter.delete("/comments/:id", enforceAuthentication, (req: Request, res: Response, next: NextFunction) => {

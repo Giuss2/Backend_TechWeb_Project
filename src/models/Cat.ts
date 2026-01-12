@@ -1,6 +1,4 @@
 import { DataTypes, Sequelize } from "sequelize";
-console.log("Loading Cat model file...");
-
 
 export function createCatModel(database: Sequelize){
     const Cat= database.define('Cat', {
@@ -35,7 +33,7 @@ export function createCatModel(database: Sequelize){
             defaultValue: DataTypes.NOW
         },
         userId: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false,
             references: {
                 model: 'Users',

@@ -1,24 +1,30 @@
 import type { Request } from "express";
-import {Cat} from "../models/database.js"
+import { Cat } from "../models/database.js";
 
-export class CatController{
+export class CatController {
 
+    // GET /cats?userId=3
+    static async listAllCats(req: Request) {
+        const { userId } = req.query;
+        const where: any = {};
 
-    static async listAllCats(req: Request){
+        if (userId) {
+            where.userId = userId;
+        }
+
         return Cat.findAll({
-            order: [["createdAt", "DESC"]]  //show most recent cat pages first
+            where,
+            order: [["createdAt", "DESC"]]
         });
     }
-    
-    static async saveCat(req: Request){
-        let cat= Cat.build(req.body);
-        //let userName= cat.get('userName') 
-        //userName= req.body.username;
+
+    static async saveCat(req: Request) {
+        const cat = Cat.build(req.body);
         cat.set('userId', req.body.userId);
         return cat.save();
     }
 
-    static async findById(req: Request){
+    static async findById(req: Request) {
         return Cat.findByPk(req.params.id);
     }
 
@@ -32,8 +38,7 @@ export class CatController{
     static async deleteCat(req: Request) {
         const cat = await Cat.findByPk(req.params.id);
         if (!cat) return null;
-        await cat.destroy(); //delete record
+        await cat.destroy();
         return cat;
     }
-
 }

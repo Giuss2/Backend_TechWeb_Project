@@ -10,7 +10,7 @@ dotenv.config();
 
   const app = express();
   const PORT = 3000;
-  console.log(process.env.TOKEN_SECRET);
+  //console.log(process.env.TOKEN_SECRET);
 
   app.use(cors({
     origin: "http://localhost:4200",

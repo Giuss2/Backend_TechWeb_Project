@@ -1,30 +1,36 @@
 import { type NextFunction, type Request, type Response } from "express";
 import { AuthController } from "../controllers/authController.js";
 import { type JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
-export function enforceAuthentication(req: Request, res: Response, next: NextFunction){
-  const authHeader = req.headers['authorization']
-  const token = authHeader?.split(' ')[1];
-  if(!token){
-    next({status: 401, message: "Unauthorized"});
-    return;
+export function enforceAuthentication(req: Request, res: Response, next: NextFunction) {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    return next({ status: 401, message: "Unauthorized - No auth header" });
   }
-   AuthController.isTokenValid(token, (err, decodedToken) => {
-    if(err){
-      next({status: 401, message: "Unauthorized"});
-    } else {
-        if (!decodedToken || typeof decodedToken === "string") {
-            next({ status: 401, message: "Unauthorized" });
-            return;
-        }
 
-        const payload = decodedToken as JwtPayload & { user: string };
+  const token = authHeader.split(' ')[1];
 
-        req.body.username = payload.user;
-        next();
+  if (!token) {
+    return next({ status: 401, message: "Unauthorized - No token" });
+  }
+
+  AuthController.isTokenValid(token, (err, decodedToken) => {
+    if (err || !decodedToken || typeof decodedToken === "string") {
+      return next({ status: 401, message: "Unauthorized - Invalid token" });
     }
+
+    const payload = decodedToken as JwtPayload & { id: number; userName: string };
+
+    
+    req.body.userId = payload.id;
+    req.body.userName = payload.userName;
+
+    next();
   });
 }
+
 
 export async function ensureUsersModifyOwnCats(req: Request, res: Response, next: NextFunction){
   

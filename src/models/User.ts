@@ -1,6 +1,5 @@
 import { Sequelize, DataTypes, Model, type Optional } from "sequelize";
 import { createHash } from "crypto";
-console.log("Loading User model file...");
 
 export interface UserAttributes {  //controlla che non l'hai usata in altri file (ho eliminato export)
   userName: string;

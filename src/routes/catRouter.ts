@@ -1,17 +1,17 @@
 import express, { type NextFunction, type Request, type Response } from "express";
 import { CatController } from "../controllers/CatController.js";
-import {enforceAuthentication, ensureUsersModifyOwnCats} from "../middleware/authorization.js";
+import { enforceAuthentication, ensureUsersModifyOwnCats } from "../middleware/authorization.js";
 
-export const catRouter= express.Router();
+export const catRouter = express.Router();
 
-//list all cat pages
-catRouter.get("/catsPages", (req: Request, res: Response, next: NextFunction) => {
+// GET /cats retrive all cats
+catRouter.get("/", (req: Request, res: Response, next: NextFunction) => {
   CatController.listAllCats(req)
     .then(cats => res.json(cats))
     .catch(next);
 });
 
-//retrive a single cat page
+// GET /cats/:id retrive cat by id
 catRouter.get("/:id", (req: Request, res: Response, next: NextFunction) => {
   CatController.findById(req)
     .then(cat => {
@@ -23,22 +23,23 @@ catRouter.get("/:id", (req: Request, res: Response, next: NextFunction) => {
     .catch(next);
 });
 
-catRouter.post("/catsPage", enforceAuthentication, (req: Request, res: Response, next: NextFunction) => {
+// POST /cats 
+catRouter.post("/", enforceAuthentication, (req: Request, res: Response, next: NextFunction) => {
   CatController.saveCat(req)
     .then(result => res.json(result))
     .catch(next);
 });
 
-//authors can modify only his own cat pages
-catRouter.put("/:id", ensureUsersModifyOwnCats, (req, res, next) => {
+// PUT /cats/:id (Only author can)
+catRouter.put("/:id", ensureUsersModifyOwnCats, (req: Request, res: Response, next: NextFunction) => {
   CatController.updateCat(req)
-    .then(cat => cat ? res.json(cat) : next({status: 404, message: "Cat not found"}))
+    .then(cat => cat ? res.json(cat) : next({ status: 404, message: "Cat not found" }))
     .catch(next);
 });
 
-//authors can delete only his own cat pages
-catRouter.delete("/:id", ensureUsersModifyOwnCats, (req, res, next) => {
+// DELETE /cats/:id (Only author can)
+catRouter.delete("/:id", ensureUsersModifyOwnCats, (req: Request, res: Response, next: NextFunction) => {
   CatController.deleteCat(req)
-    .then(cat => cat ? res.json({ message: "Cat deleted" }) : next({status: 404, message: "Cat not found"}))
+    .then(cat => cat ? res.json({ message: "Cat deleted" }) : next({ status: 404, message: "Cat not found" }))
     .catch(next);
 });
