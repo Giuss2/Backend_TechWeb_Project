@@ -17,7 +17,8 @@ export function createCatModel(database: Sequelize){
         },
         foto: {
             type: DataTypes.STRING, //da RIVEVERE
-            allowNull: false
+            allowNull: false,
+            defaultValue: 'gatto_default.jpg'
         },
         lat: {
             type: DataTypes.FLOAT,

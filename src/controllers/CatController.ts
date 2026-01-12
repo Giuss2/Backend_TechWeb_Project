@@ -19,10 +19,19 @@ export class CatController {
     }
 
     static async saveCat(req: Request) {
-        const cat = Cat.build(req.body);
-        cat.set('userId', req.body.userId);
-        return cat.save();
-    }
+
+    const data = {
+        ...req.body,
+        userId: req.body.userId,
+        foto: req.body.foto && req.body.foto.trim() !== ''
+            ? req.body.foto
+            : undefined // Use default value if foto is not provided
+    };
+
+    const cat = await Cat.create(data);
+    return cat;
+}
+
 
     static async findById(req: Request) {
         return Cat.findByPk(req.params.id);
