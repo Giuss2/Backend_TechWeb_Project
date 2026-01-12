@@ -1,7 +1,6 @@
 import { type NextFunction, type Request, type Response } from "express";
 import { AuthController } from "../controllers/authController.js";
 import { type JwtPayload } from "jsonwebtoken";
-import jwt from "jsonwebtoken";
 
 export function enforceAuthentication(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;

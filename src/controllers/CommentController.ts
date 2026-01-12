@@ -13,6 +13,7 @@ export class CommentController{
     });
   }
   
+  // Only the author can add a comment
   static async addComment(req: Request) {
   const comment = Comment.build({
     catId: Number(req.params.catId),
