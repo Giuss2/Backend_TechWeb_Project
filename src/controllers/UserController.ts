@@ -8,7 +8,7 @@ export class UserController{
             const {id} = req.params;
 
             const user = await User.findByPk(id, {
-                attributes: ["id", "userName", "createdAt"], //don't expose password
+                attributes: ["id", "userName", "createdAt", "email"], //don't expose password
             });
 
             if (!user)
