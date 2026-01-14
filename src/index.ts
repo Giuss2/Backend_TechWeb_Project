@@ -7,6 +7,8 @@ import { commentRouter } from "./routes/commentRouter.js";
 import dotenv from "dotenv";
 
 dotenv.config();
+console.log("JWT_SECRET:", process.env.JWT_SECRET);
+
 
   const app = express();
   const PORT = 3000;
