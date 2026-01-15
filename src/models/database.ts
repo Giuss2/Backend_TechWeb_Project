@@ -9,6 +9,12 @@ const database = new Sequelize({
   logging: false
 });
 
+database.authenticate()
+  .then(() => database.query("PRAGMA foreign_keys = ON;"))
+  .catch(console.error);
+
+console.log("DB PATH:", process.cwd());
+
 const User = createUserModel(database);
 const Cat = createCatModel(database);
 const Comment = createCommentModel(database);
@@ -24,6 +30,7 @@ Cat.hasMany(Comment, { foreignKey: 'catId', onDelete: 'CASCADE' });
 Comment.belongsTo(Cat, { foreignKey: 'catId' });
 
 // sync database
+
 database.sync({ force: false })
   .then(() => console.log("Database synced"))
   .catch(err => console.error("Error syncing database:", err.message));

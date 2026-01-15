@@ -5,15 +5,19 @@ export class CommentController {
 
   // GET: tutti i commenti di un gatto
   static async getCommentsForCat(req: Request) {
-    const catId = Number(req.params.catId);
+    const catId = Number(req.params.id);
+
+    if (Number.isNaN(catId)) {
+      throw { status: 400, message: "Invalid cat id" };
+    }
 
     return Comment.findAll({
       where: { catId },
-      order: [["createdAt", "DESC"]],
+      order: [["dataCommento", "DESC"]],
       include: [
         {
           model: User,
-          attributes: ["id", "username"]
+          attributes: ["id", "userName"]
         }
       ]
     });
@@ -21,37 +25,39 @@ export class CommentController {
 
   // POST: aggiunge un commento (utente autenticato)
   static async addComment(req: Request) {
-  const catId = Number(req.params.catId);
-  const userId = req.body.userId;
-  const { testo } = req.body;
+ console.log("PARAMS:", req.params);
+  console.log("BODY:", req.body);
+  console.log("HEADERS:", req.headers.authorization);
 
-  if (!userId) {
-    throw { status: 401, message: "Unauthorized" };
-  }
+    const catId = Number(req.params.id);
+    const userId = req.body.userId;
+    const { testo } = req.body;
 
-  // crea il commento
-  const newComment = await Comment.create({
-  catId,
-  userId,
-  testo
-});
+    console.log("catId:", catId);
+    console.log("userId:", userId);
+    console.log("testo:", testo);
 
-// cast per TypeScript
-const commentId = (newComment as any).id;
-
-const commentWithUser = await Comment.findByPk(commentId, {
-  include: [
-    {
-      model: User,
-      attributes: ["id", "username"]
+    if (!userId || Number.isNaN(catId) || !testo) {
+      throw { status: 400, message: "Invalid data (catId, userId or testo)" };
     }
-  ]
-});
 
-return commentWithUser;
+    const newComment = await Comment.create({
+      catId,
+      userId,
+      testo
+    });
 
-}
+    const fullComment = await Comment.findByPk(newComment.getDataValue("id"), {
+    include: [
+      {
+        model: User,
+        attributes: ["id", "userName"]
+      }
+    ]
+  });
 
+    return fullComment;
+  }
 
   // DELETE: elimina un commento (solo autore)
   static async deleteComment(req: Request) {

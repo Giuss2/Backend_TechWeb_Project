@@ -1,13 +1,13 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express, { type Request, type Response, type NextFunction } from "express";
 import authRouter from './routes/authRouter.js';
 import cors from "cors";
 import { userRouter } from "./routes/userRouter.js";
 import { catRouter } from "./routes/catRouter.js";
 import { commentRouter } from "./routes/commentRouter.js";
-import dotenv from "dotenv";
 
-dotenv.config();
-console.log("JWT_SECRET:", process.env.JWT_SECRET);
 
 
   const app = express();
@@ -33,7 +33,7 @@ console.log("JWT_SECRET:", process.env.JWT_SECRET);
   app.use('/auth', authRouter);
   app.use('/users', userRouter);
   app.use('/cats', catRouter);
-  app.use('/comments', commentRouter);
+  app.use(commentRouter);
 
   app.listen(PORT, () => {
     console.log(`Server listening on http://localhost:${PORT}`);

@@ -14,7 +14,7 @@ export class CatController {
 
         return Cat.findAll({
             where,
-            order: [["createdAt", "DESC"]]
+            order: [["dataInserimento", "DESC"]]
         });
     }
 

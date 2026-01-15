@@ -1,37 +1,41 @@
 import { Sequelize, DataTypes } from "sequelize";
 
-export function createCommentModel(database: Sequelize){
-    const Comment= database.define('Comment', {
-        id: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true
-        },
-        testo: {
-            type: DataTypes.TEXT,
-            allowNull: false
-        },
-        dataCommento: {
-            type: DataTypes.DATE,
-            allowNull: false,
-            defaultValue: DataTypes.NOW
-        },
-        catId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: 'Cats',
-                key: 'id'
-            }
-        },
-        userId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: 'Users',
-                key: 'id'
-            }
-        }
-    })
-    return Comment;
+export function createCommentModel(database: Sequelize) {
+  const Comment = database.define('Comment', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
+    testo: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    dataCommento: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW
+    },
+    catId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Cats',
+        key: 'id'
+      }
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
+    }
+  }, {
+    tableName: 'Comments',
+    timestamps: false
+  });
+
+  return Comment;
 }

@@ -1,5 +1,7 @@
 import { database, User, Cat, Comment } from './models/database.js';
 
+console.log("SEED DB PATH:", process.cwd());
+
 async function seed() {
   try {
     console.log('SEED AVVIATO');

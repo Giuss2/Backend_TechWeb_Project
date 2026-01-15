@@ -36,7 +36,9 @@ export function createUserModel(database: Sequelize) {
       }
 
     }
-  })
+    }, {
+        tableName: 'Users'
+    })
   return User;
 }
 
