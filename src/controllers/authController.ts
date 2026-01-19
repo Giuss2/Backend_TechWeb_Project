@@ -48,8 +48,8 @@ export class AuthController{
 
 
   //an user can modify a cat page ONLY if he is the author
-  static async canUserModifyCat(userName: string, catId: number){
+  static async canUserModifyCat(userId: number, catId: number) {
     const cat = await Cat.findByPk(catId);
-    return cat && cat.get('userName') === userName; //must exist and be associater with user
+    return cat !== null && cat.getDataValue('userId') === userId;
   }
 }

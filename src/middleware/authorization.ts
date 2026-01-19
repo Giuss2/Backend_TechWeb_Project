@@ -31,9 +31,9 @@ export function enforceAuthentication(req: Request, res: Response, next: NextFun
 }
 
 
-export async function ensureUsersModifyOwnCats(req: Request, res: Response, next: NextFunction){
-  
-  //only authenticated user can own cat's pages
+export async function ensureUsersModifyOwnCats(req: Request, res: Response, next: NextFunction) {
+
+  // only authenticated users can proceed
   await new Promise<void>((resolve, reject) => {
     enforceAuthentication(req, res, (err?: any) => {
       if (err) reject(err);
@@ -44,18 +44,19 @@ export async function ensureUsersModifyOwnCats(req: Request, res: Response, next
   });
 
   const catId = Number(req.params.id);
-  if(Number.isNaN(catId)){
-    next({ status: 400, message: "Invalid cat id" });
-    return;
+  if (Number.isNaN(catId)) {
+    return next({ status: 400, message: "Invalid cat id" });
   }
 
-  const userHasPermission = await AuthController.canUserModifyCat(req.body.username!, catId);  //username exists
-  //must be the author
-  if(userHasPermission){
+  const userId = req.body.userId;
+
+  const userHasPermission = await AuthController.canUserModifyCat(userId, catId);
+  //only author 
+  if (userHasPermission) {
     next();
   } else {
     next({
-      status: 403, 
+      status: 403,
       message: "Forbidden! You do not have permissions to view or modify this resource"
     });
   }
