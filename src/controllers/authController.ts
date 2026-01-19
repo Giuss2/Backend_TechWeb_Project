@@ -21,13 +21,15 @@ export class AuthController{
   return user;
 }
 
-  static async saveUser(email: string, password: string){
-    if (!password) throw new Error("Password is required");
+  static async saveUser(userName: string, email: string, password: string) {
+    if (!userName) throw new Error("Username is required");
     if (!email) throw new Error("Email is required");
+    if (!password) throw new Error("Password is required");
 
-    const user = User.build({ userName: "nickname", email, password });
+    const user = User.build({ userName, email, password });
     return user.save();
-  }
+}
+
 
 
   static issueToken(userId: number, username: string): string {

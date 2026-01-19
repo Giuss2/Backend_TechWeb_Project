@@ -1,5 +1,6 @@
 import type { Request } from "express";
 import { Comment, User } from "../models/database.js";
+import Jwt from "jsonwebtoken";
 
 export class CommentController {
 
@@ -24,30 +25,60 @@ export class CommentController {
   }
 
   // POST: aggiunge un commento (utente autenticato)
-  static async addComment(req: Request) {
- console.log("PARAMS:", req.params);
-  console.log("BODY:", req.body);
-  console.log("HEADERS:", req.headers.authorization);
+ static async addComment(req: Request) {
+  // catId
+  const catId = Number(req.params.id);
+  if (Number.isNaN(catId)) {
+    throw { status: 400, message: "Invalid cat id" };
+  }
 
-    const catId = Number(req.params.id);
-    const userId = req.body.userId;
-    const { testo } = req.body;
+  // testo
+  const { testo } = req.body;
+  if (!testo) {
+    throw { status: 400, message: "Testo is required" };
+  }
 
-    console.log("catId:", catId);
-    console.log("userId:", userId);
-    console.log("testo:", testo);
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    throw { status: 401, message: "Missing Authorization header" };
+  }
 
-    if (!userId || Number.isNaN(catId) || !testo) {
-      throw { status: 400, message: "Invalid data (catId, userId or testo)" };
-    }
+  const parts = authHeader.split(" ");
+  if (parts.length !== 2 || parts[0] !== "Bearer") {
+    throw { status: 401, message: "Invalid Authorization format" };
+  }
 
-    const newComment = await Comment.create({
-      catId,
-      userId,
-      testo
-    });
+  const token = parts[1];
+  if (!token) {
+    throw { status: 401, message: "Token missing" };
+  }
 
-    const fullComment = await Comment.findByPk(newComment.getDataValue("id"), {
+  const secret = process.env.TOKEN_SECRET;
+  if (!secret) {
+    throw new Error("TOKEN_SECRET not configured");
+  }
+
+  let decoded: Jwt.JwtPayload;
+  try {
+    decoded = Jwt.verify(token, secret) as Jwt.JwtPayload;
+  } catch {
+    throw { status: 401, message: "Invalid token" };
+  }
+
+  // userId dal token
+  const userId = decoded.id;
+  if (!userId) {
+    throw { status: 401, message: "Invalid token payload" };
+  }
+
+  const newComment = await Comment.create({
+    catId,
+    userId,
+    testo
+  });
+
+  // commento + autore
+  return Comment.findByPk(newComment.getDataValue("id"), {
     include: [
       {
         model: User,
@@ -55,9 +86,9 @@ export class CommentController {
       }
     ]
   });
+}
 
-    return fullComment;
-  }
+
 
   // DELETE: elimina un commento (solo autore)
   static async deleteComment(req: Request) {

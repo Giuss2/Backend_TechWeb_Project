@@ -30,16 +30,14 @@ const userName = user.getDataValue('userName');
 
 authRouter.post("/signup", async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { userName, email, password } = req.body;
 
-    // Validazione input
-    if (!email || !password) {
+    if (!userName || !email || !password) {
       return res.status(400).json({
-        error: "Email e password richieste"
+        error: "Username, email e password richiesti"
       });
     }
 
-    // Controllo utente già esistente
     const existingUser = await AuthController.getUserByEmail(email);
     if (existingUser) {
       return res.status(409).json({
@@ -47,10 +45,8 @@ authRouter.post("/signup", async (req, res, next) => {
       });
     }
 
-    // Creazione utente
-    const user = await AuthController.saveUser(email, password);
+    const user = await AuthController.saveUser(userName, email, password);
 
-    // Risposta
     res.status(201).json({
       message: "User created successfully",
       user: {
@@ -64,6 +60,7 @@ authRouter.post("/signup", async (req, res, next) => {
     next(err);
   }
 });
+
 
 
 export default authRouter;  //uso default perché è l'unica cosa che voglio esportare
