@@ -33,8 +33,6 @@ export function enforceAuthentication(req: Request, res: Response, next: NextFun
 
 
 export async function ensureUsersModifyOwnCats(req: Request, res: Response, next: NextFunction) {
-
-  // only authenticated users can proceed
   await new Promise<void>((resolve, reject) => {
     enforceAuthentication(req, res, (err?: any) => {
       if (err) reject(err);
@@ -49,10 +47,13 @@ export async function ensureUsersModifyOwnCats(req: Request, res: Response, next
     return next({ status: 400, message: "Invalid cat id" });
   }
 
-  const userId = req.body.userId;
+  const user = (req as any).user;
+  if (!user) {
+    return next({ status: 401, message: "Unauthorized - user not found" });
+  }
 
-  const userHasPermission = await AuthController.canUserModifyCat(userId, catId);
-  //only author 
+  const userHasPermission = await AuthController.canUserModifyCat(user.id, catId);
+
   if (userHasPermission) {
     next();
   } else {
