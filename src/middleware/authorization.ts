@@ -22,9 +22,10 @@ export function enforceAuthentication(req: Request, res: Response, next: NextFun
 
     const payload = decodedToken as JwtPayload & { id: number; userName: string };
 
-    
-    req.body.userId = payload.id;
-    req.body.userName = payload.userName;
+    (req as any).user = {
+      id: payload.id,
+      userName: payload.userName
+    };
 
     next();
   });

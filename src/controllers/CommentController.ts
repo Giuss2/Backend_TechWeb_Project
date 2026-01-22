@@ -91,18 +91,18 @@ export class CommentController {
 
 
   // DELETE: elimina un commento (solo autore)
-  static async deleteComment(req: Request) {
-    const commentId = Number(req.params.id);
-    const userId = req.body.userId;
+ static async deleteComment(req: Request) {
+  const commentId = Number(req.params.id);
+  const userId = (req as any).user.id;
 
-    const comment = await Comment.findByPk(commentId);
-    if (!comment) return null;
+  const comment = await Comment.findByPk(commentId);
+  if (!comment) return null;
 
-    if (comment.get("userId") !== userId) {
-      return "FORBIDDEN";
-    }
-
-    await comment.destroy();
-    return comment;
+  if (comment.get("userId") !== userId) {
+    return "FORBIDDEN";
   }
+
+  await comment.destroy();
+  return comment;
+}
 }
