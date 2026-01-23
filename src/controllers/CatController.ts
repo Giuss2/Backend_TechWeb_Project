@@ -19,18 +19,31 @@ export class CatController {
     }
 
     static async saveCat(req: Request) {
+        console.log("AUTH HEADER:", req.headers.authorization);
+console.log("REQ.USER:", (req as any).user);
+console.log("BODY:", req.body);
+console.log("SAVE CAT - USER:", (req as any).user);
 
-    const data = {
-        ...req.body,
-        userId: req.body.userId,
-        foto: req.body.foto && req.body.foto.trim() !== ''
-            ? req.body.foto
-            : undefined // Use default value if foto is not provided
-    };
 
-    const cat = await Cat.create(data);
-    return cat;
+  const user = (req as any).user;
+
+  if (!user) {
+    throw { status: 401, message: "Unauthorized" };
+  }
+
+  const data = {
+    ...req.body,
+    userId: user.userId,
+    foto:
+      req.body.foto && req.body.foto.trim() !== ""
+        ? req.body.foto
+        : undefined
+  };
+
+  const cat = await Cat.create(data);
+  return cat;
 }
+
 
 
     static async findById(req: Request) {

@@ -23,9 +23,13 @@ export function enforceAuthentication(req: Request, res: Response, next: NextFun
     const payload = decodedToken as JwtPayload & { id: number; userName: string };
 
     (req as any).user = {
-      id: payload.id,
+      userId: payload.id,
       userName: payload.userName
     };
+
+    console.log("DECODED TOKEN:", decodedToken);
+console.log("REQ.USER SET TO:", (req as any).user);
+
 
     next();
   });
@@ -52,7 +56,7 @@ export async function ensureUsersModifyOwnCats(req: Request, res: Response, next
     return next({ status: 401, message: "Unauthorized - user not found" });
   }
 
-  const userHasPermission = await AuthController.canUserModifyCat(user.id, catId);
+  const userHasPermission = await AuthController.canUserModifyCat(user.userId, catId); // ← qui
 
   if (userHasPermission) {
     next();
