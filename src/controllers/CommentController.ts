@@ -93,7 +93,7 @@ export class CommentController {
   // DELETE: elimina un commento (solo autore)
  static async deleteComment(req: Request) {
   const commentId = Number(req.params.id);
-  const userId = (req as any).user.id;
+  const userId = (req as any).user.userId;
 
   const comment = await Comment.findByPk(commentId);
   if (!comment) return null;
@@ -105,4 +105,5 @@ export class CommentController {
   await comment.destroy();
   return comment;
 }
+
 }
