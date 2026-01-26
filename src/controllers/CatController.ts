@@ -1,5 +1,5 @@
 import type { Request } from "express";
-import { Cat } from "../models/database.js";
+import { Cat, User } from "../models/database.js";
 
 export class CatController {
 
@@ -12,9 +12,14 @@ export class CatController {
             where.userId = userId;
         }
 
-        return Cat.findAll({
-            where,
-            order: [["dataInserimento", "DESC"]]
+         return Cat.findAll({ where,
+            order: [["dataInserimento", "DESC"]],
+            include: [
+            {
+                model: User,
+                attributes: ["id", "userName"]
+            }
+            ]
         });
     }
 
@@ -46,10 +51,16 @@ console.log("SAVE CAT - USER:", (req as any).user);
 
 
 
-    static async findById(req: Request) {
-        return Cat.findByPk(req.params.id);
-    }
-
+static async findById(req: Request) {
+    return Cat.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          attributes: ["id", "userName"]
+        }
+      ]
+    });
+  }
     static async updateCat(req: Request) {
         const cat = await Cat.findByPk(req.params.id);
         if (!cat) return null;
