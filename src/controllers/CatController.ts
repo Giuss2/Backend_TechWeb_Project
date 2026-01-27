@@ -24,11 +24,6 @@ export class CatController {
     }
 
     static async saveCat(req: Request) {
-        console.log("AUTH HEADER:", req.headers.authorization);
-console.log("REQ.USER:", (req as any).user);
-console.log("BODY:", req.body);
-console.log("SAVE CAT - USER:", (req as any).user);
-
 
   const user = (req as any).user;
 

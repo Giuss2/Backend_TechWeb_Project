@@ -1,7 +1,7 @@
 import { Sequelize, DataTypes, Model, type Optional } from "sequelize";
 import { createHash } from "crypto";
 
-export interface UserAttributes {  //controlla che non l'hai usata in altri file (ho eliminato export)
+export interface UserAttributes {  
   userName: string;
   email: string;
   password: string;

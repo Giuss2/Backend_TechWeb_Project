@@ -12,7 +12,7 @@ commentRouter.get("/cats/:id/comments", (req: Request, res: Response, next: Next
 });
 
 // POST /cats/:id/comments
-commentRouter.post("/cats/:id/comments", ensureUsersModifyOwnComments, (req: Request, res: Response, next: NextFunction) => {
+commentRouter.post("/cats/:id/comments", enforceAuthentication, (req: Request, res: Response, next: NextFunction) => {
     CommentController.addComment(req)
       .then(comment => res.json(comment))
       .catch(next);

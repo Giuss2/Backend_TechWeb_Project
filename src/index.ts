@@ -9,16 +9,14 @@ import { catRouter } from "./routes/catRouter.js";
 import { commentRouter } from "./routes/commentRouter.js";
 
 
-
   const app = express();
   const PORT = 3000;
-  //console.log(process.env.TOKEN_SECRET);
 
   app.use(cors({
     origin: "http://localhost:4200",
     credentials: true
   }));
-  app.use(express.json());
+  app.use(express.json()); // Middleware for parsing of JSON body
 
   // Error handler
   app.use((err: any, req: Request, res: Response, next: NextFunction) => {

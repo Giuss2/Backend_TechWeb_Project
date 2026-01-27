@@ -4,7 +4,7 @@ import Jwt from "jsonwebtoken";
 
 export class CommentController {
 
-  // GET: tutti i commenti di un gatto
+  // GET: all comments of a cat page
   static async getCommentsForCat(req: Request) {
     const catId = Number(req.params.id);
 
@@ -24,39 +24,24 @@ export class CommentController {
     });
   }
 
-  // POST: aggiunge un commento (utente autenticato)
+  // POST (olny if authenticated)
  static async addComment(req: Request) {
-  // catId
+  // --- Validations ---
   const catId = Number(req.params.id);
-  if (Number.isNaN(catId)) {
-    throw { status: 400, message: "Invalid cat id" };
-  }
+  if (!catId) throw { status: 400, message: "Invalid cat id" };
 
-  // testo
   const { testo } = req.body;
-  if (!testo) {
-    throw { status: 400, message: "Testo is required" };
-  }
+  if (!testo) throw { status: 400, message: "Testo is required" };
 
+  // --- Authorization ---
   const authHeader = req.headers.authorization;
-  if (!authHeader) {
-    throw { status: 401, message: "Missing Authorization header" };
-  }
+  if (!authHeader) throw { status: 401, message: "Missing Authorization header" };
 
-  const parts = authHeader.split(" ");
-  if (parts.length !== 2 || parts[0] !== "Bearer") {
-    throw { status: 401, message: "Invalid Authorization format" };
-  }
-
-  const token = parts[1];
-  if (!token) {
-    throw { status: 401, message: "Token missing" };
-  }
+  const token = authHeader.split(" ")[1];
+  if (!token) throw { status: 401, message: "Invalid Authorization token" };
 
   const secret = process.env.TOKEN_SECRET;
-  if (!secret) {
-    throw new Error("TOKEN_SECRET not configured");
-  }
+  if (!secret) throw new Error("TOKEN_SECRET not configured");
 
   let decoded: Jwt.JwtPayload;
   try {
@@ -65,11 +50,8 @@ export class CommentController {
     throw { status: 401, message: "Invalid token" };
   }
 
-  // userId dal token
   const userId = decoded.id;
-  if (!userId) {
-    throw { status: 401, message: "Invalid token payload" };
-  }
+  if (!userId) throw { status: 401, message: "Invalid token payload" };
 
   const newComment = await Comment.create({
     catId,
@@ -77,7 +59,7 @@ export class CommentController {
     testo
   });
 
-  // commento + autore
+  // comment + author
   return Comment.findByPk(newComment.getDataValue("id"), {
     include: [
       {
@@ -88,9 +70,7 @@ export class CommentController {
   });
 }
 
-
-
-  // DELETE: elimina un commento (solo autore)
+  // DELETE (only the author of the comment can)
  static async deleteComment(req: Request) {
   const commentId = Number(req.params.id);
   const userId = (req as any).user.userId;
