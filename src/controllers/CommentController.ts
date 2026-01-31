@@ -5,24 +5,39 @@ import Jwt from "jsonwebtoken";
 export class CommentController {
 
   // GET: all comments of a cat page
-  static async getCommentsForCat(req: Request) {
-    const catId = Number(req.params.id);
-
-    if (Number.isNaN(catId)) {
-      throw { status: 400, message: "Invalid cat id" };
-    }
-
-    return Comment.findAll({
-      where: { catId },
-      order: [["dataCommento", "DESC"]],
-      include: [
-        {
-          model: User,
-          attributes: ["id", "userName"]
-        }
-      ]
-    });
+static async getCommentsForCat(req: Request) {
+  const catId = Number(req.params.id);
+  if (Number.isNaN(catId)) {
+    throw { status: 400, message: "Invalid cat id" };
   }
+
+  // --- Pagination ---
+  const page = Number(req.query.page) || 1;     // pagina corrente
+  const limit = Number(req.query.limit) || 25;  // elementi per pagina
+  const offset = (page - 1) * limit;
+
+  
+  const { rows: comments, count } = await Comment.findAndCountAll({
+    where: { catId },
+    order: [["dataCommento", "DESC"]],
+    include: [
+      { model: User, attributes: ["id", "userName"] }
+    ],
+    limit,
+    offset
+  });
+
+  return {
+    comments,
+    pagination: {
+      total: count,
+      page,
+      limit,
+      totalPages: Math.ceil(count / limit)
+    }
+  };
+}
+
 
   // POST (olny if authenticated)
  static async addComment(req: Request) {

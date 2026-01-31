@@ -2,6 +2,20 @@ import { database, User, Cat, Comment } from './models/database.js';
 
 console.log("SEED DB PATH:", process.cwd());
 
+async function seedComments(catId: number, userId: number, total: number) {
+  for (let i = 1; i <= total; i++) {
+    await Comment.create({
+      catId,
+      userId,
+      testo: `Commento di prova #${i}`
+    });
+  }
+  console.log(`Seeded ${total} comments for cat ${catId}`);
+}
+
+
+
+
 async function seed() {
   try {
     console.log('SEED AVVIATO');
@@ -21,6 +35,7 @@ const c3 = await Cat.create({titolo: 'Simba', descrizione: 'Re della casa', foto
     await Comment.create({ testo: 'Che bel gatto!', userId: u1.getDataValue('id'), catId: c1.getDataValue('id') });
     await Comment.create({ testo: 'Meraviglioso!', userId: u2.getDataValue('id'), catId: c2.getDataValue('id') });
     await Comment.create({ testo: 'Dolcissimo!', userId: u2.getDataValue('id'), catId: c3.getDataValue('id') });
+    await seedComments(1, 1, 50); 
 
     console.log('Database seeded successfully!');
     process.exit(0);
