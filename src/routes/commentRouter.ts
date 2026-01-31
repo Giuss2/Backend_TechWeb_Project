@@ -4,20 +4,21 @@ import { enforceAuthentication, ensureUsersModifyOwnComments } from "../middlewa
 
 export const commentRouter = express.Router();
 
-// GET /cats/:id/comments
-commentRouter.get("/cats/:id/comments", (req: Request, res: Response, next: NextFunction) => {
-  CommentController.getCommentsForCat(req)
-    .then(comments => res.json(comments))
-    .catch(next);
-});
 
-// POST /cats/:id/comments
-commentRouter.post("/cats/:id/comments", enforceAuthentication, (req: Request, res: Response, next: NextFunction) => {
+commentRouter
+  .route("/cats/:id/comments")
+  .get((req: Request, res: Response, next: NextFunction) => {
+    CommentController.getCommentsForCat(req)
+      .then(comments => res.json(comments))
+      .catch(next);
+  })
+  .post(enforceAuthentication, (req: Request, res: Response, next: NextFunction) => {
     CommentController.addComment(req)
       .then(comment => res.json(comment))
       .catch(next);
-  }
-);
+  });
+
+
 
 // DELETE /comments/:id
 commentRouter.delete("/comments/:id", ensureUsersModifyOwnComments, (req: Request, res: Response, next: NextFunction) => {

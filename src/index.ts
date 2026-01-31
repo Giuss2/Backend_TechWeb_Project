@@ -27,7 +27,7 @@ import { commentRouter } from "./routes/commentRouter.js";
     });
   });
 
-  //routes
+  //routes modulari
   app.use('/auth', authRouter);
   app.use('/users', userRouter);
   app.use('/cats', catRouter);
