@@ -11,16 +11,16 @@ authRouter.post('/login', async (req, res, next) => {
       return res.status(400).json({ error: 'Email e password richieste' });
     }
 
-   const user = await AuthController.checkCredentials(email, password);
+    const user = await AuthController.checkCredentials(email, password);
 
-  if (!user) {
-    return res.status(401).json({ error: 'Invalid credentials. Try again.' });
-  }
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials. Try again.' });
+    }
 
-const userId = user.getDataValue('id');
-const userName = user.getDataValue('userName');
-  const token = AuthController.issueToken(userId, userName);
-  res.json({ token });
+    const userId = user.getDataValue('id');
+    const userName = user.getDataValue('userName');
+    const token = AuthController.issueToken(userId, userName);
+    res.json({ token });
 
   } catch (err) {
     next(err);

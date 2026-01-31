@@ -19,7 +19,7 @@ const User = createUserModel(database);
 const Cat = createCatModel(database);
 const Comment = createCommentModel(database);
 
-// associazioni
+// assotiations
 User.hasMany(Cat, { foreignKey: 'userId', onDelete: 'CASCADE' });
 Cat.belongsTo(User, { foreignKey: 'userId' });
 

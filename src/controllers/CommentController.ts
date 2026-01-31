@@ -12,8 +12,8 @@ static async getCommentsForCat(req: Request) {
   }
 
   // --- Pagination ---
-  const page = Number(req.query.page) || 1;     // pagina corrente
-  const limit = Number(req.query.limit) || 25;  // elementi per pagina
+  const page = Number(req.query.page) || 1;     // current page
+  const limit = Number(req.query.limit) || 25;  // elements per page
   const offset = (page - 1) * limit;
 
   
@@ -86,7 +86,7 @@ static async getCommentsForCat(req: Request) {
 }
 
   // DELETE (only the author of the comment can)
- static async deleteComment(req: Request) {
+static async deleteComment(req: Request) {
   const commentId = Number(req.params.id);
   const userId = (req as any).user.userId;
 
