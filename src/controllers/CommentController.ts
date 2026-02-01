@@ -1,6 +1,7 @@
 import type { Request } from "express";
 import { Comment, User } from "../models/database.js";
 import Jwt from "jsonwebtoken";
+import sanitizeHtml from "sanitize-html";
 
 export class CommentController {
 
@@ -48,6 +49,9 @@ static async getCommentsForCat(req: Request) {
   const { testo } = req.body;
   if (!testo) throw { status: 400, message: "Testo is required" };
 
+  if (testo.length > 500)
+    throw { status: 400, message: "Testo troppo lungo (max 500 caratteri)" };
+
   // --- Authorization ---
   const authHeader = req.headers.authorization;
   if (!authHeader) throw { status: 401, message: "Missing Authorization header" };
@@ -68,10 +72,16 @@ static async getCommentsForCat(req: Request) {
   const userId = decoded.id;
   if (!userId) throw { status: 401, message: "Invalid token payload" };
 
+  // --- Sanitization ---
+  const cleanText = sanitizeHtml(testo, {
+    allowedTags: [],
+    allowedAttributes: {}
+  });
+
   const newComment = await Comment.create({
     catId,
     userId,
-    testo
+    testo: cleanText
   });
 
   // comment + author
