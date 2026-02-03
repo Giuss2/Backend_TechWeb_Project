@@ -13,7 +13,6 @@ database.authenticate()
   .then(() => database.query("PRAGMA foreign_keys = ON;"))
   .catch(console.error);
 
-console.log("DB PATH:", process.cwd());
 
 const User = createUserModel(database);
 const Cat = createCatModel(database);

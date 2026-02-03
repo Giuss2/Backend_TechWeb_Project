@@ -28,8 +28,6 @@ export function enforceAuthentication(req: Request, res: Response, next: NextFun
       userName: payload.userName
     };
 
-    console.log("DECODED TOKEN:", decodedToken);
-console.log("REQ.USER SET TO:", (req as any).user);
 
 
     next();
