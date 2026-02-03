@@ -27,9 +27,10 @@ async function seed() {
     const u2 = await User.create({ userName: 'Mario', email: 'mario@example.com', password: '1234' });
 
     // --- Cat pages ---
-const c1 = await Cat.create({titolo: 'Milo', descrizione: 'Gattino carino', foto: 'gatto_default.jpg', lat: 45.4642, lng: 9.1900, userId: u1.getDataValue('id')});
-const c2 = await Cat.create({titolo: 'Luna', descrizione: 'Gatta curiosa', foto: 'gatto_default.jpg', lat: 41.9028, lng: 12.4964, userId: u1.getDataValue('id')});
-const c3 = await Cat.create({titolo: 'Simba', descrizione: 'Re della casa', foto: 'gatto_default.jpg', lat: 40.8518, lng: 14.2681, userId: u2.getDataValue('id')});
+const c1 = await Cat.create({titolo: 'Milo', descrizione: 'Era [persiano](https://www.google.com/search?q=gatto+persiano&sca_esv=51db692ab24d98dd&rlz=1C1ONGR_itIT1189IT1189&udm=2&biw=1707&bih=811&aic=0&sxsrf=ANbL-n5B3I74QI2O2hzBGNNsveWXQzkCYA%3A1770128006764&ei=hgKCacmoLqiO9u8Pke7K2AQ&oq=gatto+persi&gs_lp=Egtnd3Mtd2l6LWltZyILZ2F0dG8gcGVyc2kqAggAMggQABiABBixAzIFEAAYgAQyBRAAGIAEMggQABiABBixAzIFEAAYgAQyBRAAGIAEMgUQABiABDIFEAAYgAQyBRAAGIAEMgUQABiABEiRIVCNCFjaFXABeACQAQCYAaoBoAHTCqoBAzMuOLgBA8gBAPgBAZgCDKACkQuoAgrCAgoQIxgnGMkCGOoCwgIHECMYJxjJAsICCxAAGIAEGLEDGIMBwgIOEAAYgAQYsQMYgwEYigXCAgoQABiABBhDGIoFwgINEAAYgAQYsQMYQxiKBZgDEZIHAzMuOaAHlUWyBwMyLjm4B4ALwgcHMC44LjMuMcgHLoAIAA&sclient=gws-wiz-img)', 
+                              foto: 'gatto_default.jpg', lat: 45.4642, lng: 9.1900, userId: u1.getDataValue('id')});
+const c2 = await Cat.create({titolo: 'Luna', descrizione: 'Gatta *elegante*', foto: 'gatto_default.jpg', lat: 41.9028, lng: 12.4964, userId: u1.getDataValue('id')});
+const c3 = await Cat.create({titolo: 'Simba', descrizione: '**S T U P E N D O**', foto: 'gatto_default.jpg', lat: 40.8518, lng: 14.2681, userId: u2.getDataValue('id')});
 
     // --- Comments ---
     await Comment.create({ testo: 'Che bel gatto!', userId: u1.getDataValue('id'), catId: c1.getDataValue('id') });
